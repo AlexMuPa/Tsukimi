@@ -1,0 +1,173 @@
+
+<body class="bg-gray min-h-screen">
+  <main class="w-4/5 m-auto py-3">
+    <h1 class="text-center text-5xl">Practica los Kana</h1>
+    <div class="bg-red-2 w-3/4 md:w-1/2  rounded-lg fixed top-30 left-1/2 z-10 text-center opacity-80 text-black-100/100"
+    style="transform: translateX(-50%)"
+    [ngClass]="error_message? 'block': 'hidden'">
+      <p class="mx-auto py-2 font-bold text-lg ">
+        No has seleccionado ningún kana
+      </p>
+    </div>
+    <section>
+      <div [ngClass]="startQuiz? 'hidden' : 'block'">
+        <div class="flex md:w-1/2 m-auto text-center justify-between py-4">
+          <button class="py-2 px-5 rounded-lg border border-black text-black hover:bg-black-2 hover:text-black "
+          (click)="changeKana('')">
+            Hiragana
+          </button>
+          <button class="py-2 px-5 rounded-lg border border-black text-black hover:bg-black-2 hover:text-black "
+          (click)="changeKana('katakana')">
+            Katakana
+          </button>
+        </div>
+        <div class="flex justify-center m-auto w-1/2">
+          <button class="py-2 px-5 rounded-lg border border-red text-red hover:bg-red-2 hover:text-black "
+          (click)="quiz()">
+            Comenzar
+          </button>
+        </div>
+        <br>
+        <div class="flex justify-center md:justify-between flex-wrap flex-col md:flex-row">
+          <div class="xl:w-1/3 md:w-1/2 text-center">
+            <h3 class="text-center text-2xl font-bold">Básico</h3>
+            <button (click) = "all(hiraganaArray)" class="py-1.5 px-7 rounded-lg border border-black text-black hover:bg-black-2 hover:text-black ">
+              Todo
+            </button>
+            <div *ngFor ='let kana of hiraganaArray; let i= index' class="mb-3.5">
+
+
+              <div *ngIf="(i+1) % 5 == 0" class="row">
+                <button class="fa-solid fa-arrow-right mr-2" (click) ="selectLine($event)">
+
+                </button>
+                <button *ngIf="hiraganaArray[i -4]"class="inline-block border-2 p-2 w-11 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaArray[i -4])? 'bg-red' : 'bg-gray'" >
+                  {{ hiraganaArray[i -4] }}
+                </button>
+                <button *ngIf="hiraganaArray[i -3]" class="inline-block border-2 p-2 w-11 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaArray[i -3])? 'bg-red' : 'bg-gray'">
+                  {{ hiraganaArray[i -3] }}
+                </button>
+                <button *ngIf="hiraganaArray[i -2]" class="inline-block border-2 p-2 w-11 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaArray[i -2])? 'bg-red' : 'bg-gray'" >
+                  {{ hiraganaArray[i -2] }}
+                </button>
+                <button *ngIf="hiraganaArray[i -1]" class="inline-block border-2 p-2 w-11 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaArray[i -1])? 'bg-red' : 'bg-gray'" >
+                  {{ hiraganaArray[i -1] }}
+                </button>
+                <button *ngIf="kana" class="inline-block border-2 p-2 mr-3 border-solid w-11 hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(kana)? 'bg-red' : 'bg-gray'" >
+                  {{ kana }}
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class=" xl:w-1/3 md:w-1/2 text-center">
+            <h3 class="text-center text-2xl font-bold">Dakuten</h3>
+            <button (click) = "all(hiraganaNigori)" class="py-1.5 px-7 rounded-lg border border-black text-black hover:bg-black-2 hover:text-black ">
+              Todo
+            </button>
+            <div *ngFor ='let kana of hiraganaNigori; let i= index' class="mb-4">
+
+
+              <div *ngIf="(i+1) % 5 == 0" class="row">
+                <button class="fa-solid fa-arrow-right mr-2" (click) ="selectLine($event)">
+
+                </button>
+                <button *ngIf="hiraganaNigori[i -4]"class="inline-block border-2 p-2 w-11 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaNigori[i -4])? 'bg-red' : 'bg-gray'" >
+                  {{ hiraganaNigori[i -4] }}
+                </button>
+                <button *ngIf="hiraganaNigori[i -3]" class="inline-block border-2 p-2 w-11 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaNigori[i -3])? 'bg-red' : 'bg-gray'">
+                  {{ hiraganaNigori[i -3] }}
+                </button>
+                <button *ngIf="hiraganaNigori[i -2]" class="inline-block border-2 p-2 w-11 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaNigori[i -2])? 'bg-red' : 'bg-gray'" >
+                  {{ hiraganaNigori[i -2] }}
+                </button>
+                <button *ngIf="hiraganaNigori[i -1]" class="inline-block border-2 p-2 w-11 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaNigori[i -1])? 'bg-red' : 'bg-gray'" >
+                  {{ hiraganaNigori[i -1] }}
+                </button>
+                <button *ngIf="kana" class="inline-block border-2 p-2 mr-3 border-solid w-11 hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(kana)? 'bg-red' : 'bg-gray'" >
+                  {{ kana }}
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="xl:w-1/3 md:w-1/2 text-center m-auto">
+            <h3 class="text-center text-2xl font-bold">Diftongos</h3>
+            <button (click) = "all(hiraganaDiftong)" class="py-1.5 px-7 rounded-lg border border-black text-black hover:bg-black-2 hover:text-black ">
+              Todo
+            </button>
+            <div *ngFor ='let kana of hiraganaDiftong; let i= index' class="mb-4">
+
+
+              <div *ngIf="(i+1) % 3 == 0" class="row">
+                <button class="fa-solid fa-arrow-right mr-2" (click) ="selectLine($event)">
+
+                </button>
+                <button *ngIf="hiraganaDiftong[i -2]" class="inline-block border-2 p-2  mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaDiftong[i -2])? 'bg-red' : 'bg-gray'" >
+                  {{ hiraganaDiftong[i -2] }}
+                </button>
+                <button *ngIf="hiraganaDiftong[i -1]" class="inline-block border-2 p-2 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(hiraganaDiftong[i -1])? 'bg-red' : 'bg-gray'" >
+                  {{ hiraganaDiftong[i -1] }}
+                </button>
+                <button *ngIf="kana" class="inline-block border-2 p-2 mr-3 border-solid hover:bg-red-2"
+                (click)="addRemove($event)" [ngClass]="checkSelection(kana)? 'bg-red' : 'bg-gray'" >
+                  {{ kana }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="my-6 w-3/4 m-auto flex flex-col justify-center" [ngClass]="end? 'block' : 'hidden'">
+        <div class="text-xl font-bold text-green">
+          Respuestas correctas: {{correct}}
+        </div>
+
+        <div class="text-xl font-bold text-red-2">
+          Respuestas incorrectas: {{error}}
+        </div>
+        <div class="flex flex-col space-y-2 sm:flex-row justify-between my-6">
+          <button class=" py-2 px-5 rounded-lg border border-red text-red hover:bg-red-2 hover:text-black "
+          (click)="returnToSelection()">
+            Volver a la selección
+          </button>
+          <button class="py-2 px-5 rounded-lg border border-red text-red hover:bg-red-2 hover:text-black "
+          (click)="quiz()">
+            Repetir la prueba
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-14" [ngClass]="startQuiz? 'block' : 'hidden'">
+        <div class="flex justify-center m-auto text-center text-9xl font-bold w-3/4 border
+        border-black py-14"
+        [ngClass] = "wrongAnswer? 'bg-red animate-ping': '' ">
+          {{currentKana}}
+        </div>
+
+        <input (keyup.enter) ="onEnter($event)" type="text"
+        class="w-3/4 h-12 block border m-auto my-4 text-center font-bold text-lg" [disabled]="end">
+      </div>
+    </section>
+
+
+  </main>
+
+</body>
