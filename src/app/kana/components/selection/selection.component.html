@@ -1,6 +1,6 @@
 
 <body class="bg-gray min-h-screen">
-  <main class="w-4/5 m-auto py-3">
+  <main class="w-4/5 m-auto py-3" [ngClass]="startQuiz? 'hidden' : 'block'">
     <h1 class="text-center text-5xl">Practica los Kana</h1>
     <div class="bg-red-2 w-3/4 md:w-1/2  rounded-lg fixed top-30 left-1/2 z-10 text-center opacity-80 text-black-100/100"
     style="transform: translateX(-50%)"
@@ -10,7 +10,7 @@
       </p>
     </div>
     <section>
-      <div [ngClass]="startQuiz? 'hidden' : 'block'">
+      <div >
         <div class="flex md:w-1/2 m-auto text-center justify-between py-4">
           <button class="py-2 px-5 rounded-lg border border-black text-black hover:bg-black-2 hover:text-black "
           (click)="changeKana('')">
@@ -104,7 +104,7 @@
           </div>
 
           <div class="xl:w-1/3 md:w-1/2 text-center m-auto">
-            <h3 class="text-center text-2xl font-bold">Diftongos</h3>
+            <h3 class="text-center text-2xl font-bold">Diptongos</h3>
             <button (click) = "all(hiraganaDiftong)" class="py-1.5 px-7 rounded-lg border border-black text-black hover:bg-black-2 hover:text-black ">
               Todo
             </button>
@@ -133,41 +133,37 @@
         </div>
       </div>
     </section>
-
-    <section>
-      <div class="my-6 w-3/4 m-auto flex flex-col justify-center" [ngClass]="end? 'block' : 'hidden'">
-        <div class="text-xl font-bold text-green">
-          Respuestas correctas: {{correct}}
-        </div>
-
-        <div class="text-xl font-bold text-red-2">
-          Respuestas incorrectas: {{error}}
-        </div>
-        <div class="flex flex-col space-y-2 sm:flex-row justify-between my-6">
-          <button class=" py-2 px-5 rounded-lg border border-red text-red hover:bg-red-2 hover:text-black "
-          (click)="returnToSelection()">
-            Volver a la selección
-          </button>
-          <button class="py-2 px-5 rounded-lg border border-red text-red hover:bg-red-2 hover:text-black "
-          (click)="quiz()">
-            Repetir la prueba
-          </button>
-        </div>
-      </div>
-
-      <div class="mt-14" [ngClass]="startQuiz? 'block' : 'hidden'">
-        <div class="flex justify-center m-auto text-center text-9xl font-bold w-3/4 border
-        border-black py-14"
-        [ngClass] = "wrongAnswer? 'bg-red animate-ping': '' ">
-          {{currentKana}}
-        </div>
-
-        <input (keyup.enter) ="onEnter($event)" type="text"
-        class="w-3/4 h-12 block border m-auto my-4 text-center font-bold text-lg" [disabled]="end">
-      </div>
-    </section>
-
-
   </main>
+  <section>
+    <div class="w-3/4 h-56 m-auto flex flex-col justify-center" [ngClass]="end? 'block' : 'hidden'">
+      <div class="text-xl font-bold text-green">
+        Respuestas correctas: {{correct}}
+      </div>
+
+      <div class="text-xl font-bold text-red-2">
+        Respuestas incorrectas: {{error}}
+      </div>
+      <div class="flex flex-col space-y-2 sm:flex-row justify-between my-6">
+        <button class=" py-2 px-5 rounded-lg border border-red text-red hover:bg-red-2 hover:text-black "
+        (click)="returnToSelection()">
+          Volver a la selección
+        </button>
+        <button class="py-2 px-5 rounded-lg border border-red text-red hover:bg-red-2 hover:text-black "
+        (click)="quiz()">
+          Repetir la prueba
+        </button>
+      </div>
+    </div>
+
+    <div class="" [ngClass]="startQuiz? 'block' : 'hidden'">
+      <div class="flex justify-center m-auto text-center text-9xl font-bold bg-black-2 py-14 w-full h-72"
+      [ngClass] = "wrongAnswer? 'bg-red animate-ping': '' ">
+        {{currentKana}}
+      </div>
+
+      <input (keyup.enter) ="onEnter($event)" type="text"
+      class="w-full h-12 block border m-auto my-4 text-center font-bold text-lg" [disabled]="end">
+    </div>
+  </section>
 
 </body>

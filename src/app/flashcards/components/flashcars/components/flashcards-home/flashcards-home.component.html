@@ -1,0 +1,40 @@
+<body class="bg-gray pb-12 min-h-screen">
+  <div *ngIf="form" class="z-50 bg-black overflow-hidden bg-opacity-80 fixed inset-0 h-full max-h-full">
+    <app-flashcard-form></app-flashcard-form>
+  </div>
+  <h1 class="text-center text-5xl pt-12">Tarjetas</h1>
+  <main class="w-10/12 mx-auto">
+    <div class="md:flex mt-20 justify-between">
+      <div class=" mb-12 md:w-1/2 flex justify-center">
+        <button class="w-3/4 h-64" (click)="startReview()">
+          <div class="w-100 bg-black-2 h-64 rounded border mx-auto">
+            <a routerLink="review" class="w-full h-full inline-block">
+              <h2 class="text-3xl text-center pt-10">Revisiones pendientes</h2>
+              <p class="text-2xl font-bold text-center pt-12">{{reviews}}</p>
+            </a>
+          </div>
+        </button>
+      </div>
+      <div class="md:w-1/2 flex justify-center">
+        <button class="w-3/4 h-64" (click)="flashcardForm()">
+          <div class="w-100 bg-black-2 h-64 rounded border mx-auto">
+            <h2 class="text-3xl text-center pt-10">Crear tarjetas</h2>
+            <p class="text-2xl font-bold text-center pt-12">Tarjetas totales: {{total}}</p>
+          </div>
+        </button>
+      </div>
+    </div>
+    <h2 class="text-center text-3xl pt-12">Progreso</h2>
+    <div style="display: block;">
+      <canvas baseChart width="500" height="200"
+        [datasets]="lineChartData"
+        [labels]="lineChartLabel"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins">
+      </canvas>
+    </div>
+  </main>
+</body>

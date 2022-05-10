@@ -12,14 +12,19 @@
         </div>
 
         <div class="hidden md:flex items-center space-x-4 text-red">
-          <a href="" class="hover:text-red-2 font-bold text-lg">Gramática</a>
+          <a routerLink="gramatica" class="hover:text-red-2 font-bold text-lg">Gramática</a>
           <a routerLink="kana" class="hover:text-red-2 font-bold text-lg">Kana</a>
-          <a href="" class="hover:text-red-2 font-bold text-lg">Tarjetas</a>
+          <a routerLink="tarjetas" class="hover:text-red-2 font-bold text-lg">Tarjetas</a>
         </div>
 
-        <div class="hidden md:flex items-center space-x-4 text-red md:px-5">
-          <a href="" class="hover:text-red-2 font-bold text-lg">Iniciar Sesion</a>
-          <a href="" class="hover:text-red-2 font-bold text-lg">Registrarse</a>
+        <div class="hidden items-center space-x-4 text-red md:px-5" [ngClass]="login? 'hidden' : 'md:flex'">
+          <a routerLink="users/login" class="hover:text-red-2 font-bold text-lg">Iniciar Sesion</a>
+          <a routerLink="users/register" class="hover:text-red-2 font-bold text-lg">Registrarse</a>
+        </div>
+
+        <div class="hidden items-center space-x-4 text-red md:px-5" [ngClass]="login? 'md:flex' : 'hidden'">
+          <a routerLink="" class="hover:text-red-2 font-bold text-lg" (click)="logout()">Cerrar Sesión</a>
+          <a routerLink="" class="hover:text-red-2 font-bold text-lg">Perfil</a>
         </div>
 
         <div class="md:hidden flex items-center space-x-4 mr-5 px-5">
@@ -30,13 +35,17 @@
       </div>
       <div class="m-auto">
         <div class="flex text-red md:hidden" [ngClass]="bars? 'flex-col' : 'hidden'" >
-          <a href="" class="hover:text-red-2 font-bold text-lg px-6">Gramática</a>
-          <a routerLink="/kana" class="hover:text-red-2 font-bold text-lg px-6">Kana</a>
-          <a href="" class="hover:text-red-2 font-bold text-lg px-6">Tarjetas</a>
+          <a routerLink="gramatica" class="hover:text-red-2 font-bold text-lg px-6">Gramática</a>
+          <a routerLink="kana" class="hover:text-red-2 font-bold text-lg px-6">Kana</a>
+          <a routerLink="tarjetas" class="hover:text-red-2 font-bold text-lg px-6">Tarjetas</a>
         </div>
-        <div class="text-red flex md:hidden" [ngClass]="user? 'flex-col' : 'hidden'" >
-          <a href="" class="hover:text-red-2 font-bold text-lg px-6">Iniciar Sesión</a>
-          <a href="" class="hover:text-red-2 font-bold text-lg px-6">Registrarse</a>
+        <div class="text-red flex md:hidden" [ngClass]="(user && !login)? 'flex-col' : 'hidden'" >
+          <a routerLink="users/login" class="hover:text-red-2 font-bold text-lg px-6">Iniciar Sesión</a>
+          <a routerLink="users/register" class="hover:text-red-2 font-bold text-lg px-6">Registrarse</a>
+        </div>
+        <div class="text-red flex md:hidden" [ngClass]="(user && login)? 'flex-col' : 'hidden'">
+          <a href="" class="hover:text-red-2 font-bold text-lg px-6" (click)="logout()">Cerrar Sesión</a>
+          <a href="" class="hover:text-red-2 font-bold text-lg px-6">Perfil</a>
         </div>
       </div>
     </div>

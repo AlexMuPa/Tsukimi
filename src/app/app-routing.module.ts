@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { KanaModule } from './kana/kana.module';
 
 
 const routes: Routes = [
@@ -13,6 +12,18 @@ const routes: Routes = [
   {
     path: 'kana',
     loadChildren: () => import('./kana/kana.module').then(m => m.KanaModule)
+  },
+  {
+    path: 'users',
+    loadChildren: () => import('./users/user.module').then(m => m.UserModule)
+  },
+  {
+    path: 'tarjetas',
+    loadChildren: () => import('./flashcards/flashcards.module').then(m => m.FlashcardsModule)
+  },
+  {
+    path: 'gramatica',
+    loadChildren: () => import('./grammar/grammar.module').then(m => m.GrammarModule)
   }
 ];
 

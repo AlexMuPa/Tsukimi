@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SharingService } from 'src/app/services/sharing.service';
 
 @Component({
   selector: 'app-header',
@@ -8,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
   bars: boolean;
   user: boolean;
-  constructor() {
+  login: boolean;
+  constructor(
+    private router: Router,
+    private sharingService: SharingService
+    ) {
     this.bars=false;
     this.user=false;
+    this.sharingService.getLoged().subscribe(
+      loged => this.login = loged.isLoged
+    );
+    if(sessionStorage.getItem('access_token')) this.login= true;
+    else this.login=false;
   }
 
   ngOnInit(): void {
@@ -30,6 +41,14 @@ export class HeaderComponent implements OnInit {
       this.user= true;
       this.bars = false;
     }
+  }
+
+  logout(){
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('userId');
+    this.login=false;
+    //this.sharingService.setLoged({isLoged: false});
+    this.router.navigateByUrl('');
   }
 
 }

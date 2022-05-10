@@ -16,13 +16,22 @@ module.exports = {
       'sans': ['Roboto', 'Helvetica', 'Arial', 'sans-serif']
     },
     animation:{
-      ping: 'ping 0.4s cubic-bezier(0, 0, 0.2, 1) 1'
+      ping: 'ping 0.4s cubic-bezier(0, 0, 0.2, 1) 1',
+      spin: 'spin 1s linear infinite'
     },
     keyframes: {
       ping: {
         '75%, 100%': {
           transform: 'scale(1.2)',
           opacity: '0',
+        }
+      },
+      spin: {
+        'from': {
+          transform: 'rotate(0deg)'
+        },
+        'to': {
+          transform: 'rotate(360deg)'
         }
       }
     }

@@ -1,0 +1,73 @@
+<body class="min-h-screen bg-gray">
+  <main class="py-3 md:grid md:grid-cols-4 gap-4">
+    <aside class=" pl-4" [ngClass]="{'w-full bg-black-2 bg-opacity-80 fixed top-0 left-0 min-h-screen overflow-y-auto' : sidebar}">
+      <div class="md:hidden">
+        <i class="fa-solid fa-bars fa-xl" (click)="openMenu()"></i>
+      </div>
+      <nav class="md:mt-20 md:block min-h-screen md:static md:bg-gray
+      absolute top-0 left-0 md:left-0 w-[300px] overflow-y-auto
+      bg-black-2 opacity-100" [ngClass]="sidebar? 'block': 'hidden'">
+      <div class="flex justify-end md:hidden">
+        <button (click)="closeMenu()"><i class="fa-solid fa-x block pr-4 pt-6 md:hidden"></i></button>
+      </div>
+        <h3 class="pt-12 p-2 text-2xl md:pt-0">Guía de gramática</h3>
+        <ul class="list-none flex-col justufy-center md:flex pl-2" >
+          <li class="pl-2"><i *ngIf="!showNames" class="fa-solid fa-angle-right names cursor-pointer" (click)="showOptions($event)"></i>
+            <i *ngIf="showNames" class="fa-solid fa-angle-down cursor-pointer names" (click)="showOptions($event)"></i>
+            Nombres</li>
+            <ul *ngIf="showNames" class="pl-2 list-none flex flex-col justufy-center aligin-center">
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Tipos de nombres</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Demostrativos e interrogativos</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Sufijos y contadores</li>
+            </ul>
+          <li class="pl-2"><i *ngIf="!showAdjectives" class="fa-solid fa-angle-right cursor-pointer adjectives" (click)="showOptions($event)"></i>
+            <i *ngIf="showAdjectives" class="fa-solid fa-angle-down cursor-pointer adjectives" (click)="showOptions($event)"></i>
+            Adjetivos y Adverbios</li>
+            <ul *ngIf="showAdjectives" class="pl-2 list-none flex flex-col justufy-center aligin-center">
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Tipo い</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Tipo な y の</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Adverbios</li>
+            </ul>
+          <li class="pl-2"><i *ngIf="!showVerbs" class="fa-solid fa-angle-right cursor-pointer verbs" (click)="showOptions($event)"></i>
+            <i *ngIf="showVerbs" class="fa-solid fa-angle-down cursor-pointer verbs" (click)="showOptions($event)"></i>
+            Verbos</li>
+            <ul *ngIf="showVerbs" class="pl-2 list-none flex flex-col justufy-center aligin-center">
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Ser o estar</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Conjugaciones</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Forma て</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Volicional y Potencial</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Causativa y Pasiva</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Condicionales</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Expresar “tener que”</li>
+            </ul>
+          <li class="pl-2"><i *ngIf="!showParticles" class="fa-solid fa-angle-right cursor-pointer particles" (click)="showOptions($event)"></i>
+            <i *ngIf="showParticles" class="fa-solid fa-angle-down cursor-pointer particles" (click)="showOptions($event)"></i>
+            Particulas</li>
+            <ul *ngIf="showParticles" class="pl-2 list-none flex flex-col justufy-center aligin-center">
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">は y も</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Partículas con verbos</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Partículas con nombres</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Otras partículas</li>
+            </ul>
+          <li class="pl-2"><i *ngIf="!showOthers" class="fa-solid fa-angle-right cursor-pointer others" (click)="showOptions($event)"></i>
+            <i *ngIf="showOthers" class="fa-solid fa-angle-down cursor-pointer others" (click)="showOptions($event)"></i>
+            Otros temas</li>
+            <ul *ngIf="showOthers" class="pl-2 list-none flex flex-col justufy-center aligin-center">
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Expresar deseos</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Símiles</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Formalidad</li>
+              <li class="pl-4 cursor-pointer" (click)="changeArticle($event)">Órdenes de las frases</li>
+            </ul>
+        </ul>
+      </nav>
+    </aside>
+    <section class="md:col-span-3" >
+      <article>
+        <h1 class="text-center text-5xl mb-4">{{article.title}}</h1>
+        <!-- [innerHTML]="article.description" -->
+        <div class="w-[95%] mx-auto md:w-11/12 space-y-3" [innerHTML]="article.description">
+        </div>
+      </article>
+    </section>
+  </main>
+</body>

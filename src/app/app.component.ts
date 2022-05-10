@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavigationEnd, NavigationError, ResolveEnd, Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -6,26 +7,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'kana';
 
-  hiraganaArray = [
-    'あ', 'い', 'う', 'え', 'お',
-    'か', 'き', 'く', 'け', 'こ',
-    'さ', 'し', 'す', 'せ', 'そ',
-    'た', 'ち', 'つ', 'て', 'と',
-    'な', 'に', 'ぬ', 'ね', 'の',
-    'は', 'ひ', 'ふ', 'へ', 'ほ',
-    'ま', 'み', 'む', 'め', 'も',
-    'や',      'ゆ',      'よ',
-    'ら', 'り', 'る', 'れ', 'ろ',
-    'わ', 'ゐ',      ,      'を',
-                        'ん',
-    'が', 'ぎ', 'ぐ', 'げ', 'ご',
-    'ざ', 'じ', 'ず', 'ぜ', 'ぞ',
-    'だ', 'ぢ', 'づ', 'で', 'ど',
-    'ば', 'び', 'ぶ', 'べ', 'ぼ',
-    'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ',
+  outlet!: RouterOutlet;
+  constructor(private router: Router){}
 
-    'ぁ', 'ぃ', 'ぅ', 'ぇ', 'ぉ'
-]
+  onActiveOutlet(component: Component) {
+    let previousUrl = this.router.url;
+    console.log(component);
+    console.log(previousUrl);
+        this.router.events.subscribe(
+          event => {
+            console.log(event);
+            if (event instanceof NavigationError) {
+              console.log(component);
+              this.router.navigateByUrl(event.url);
+            }
+        }
+    )
+
+}
 }
