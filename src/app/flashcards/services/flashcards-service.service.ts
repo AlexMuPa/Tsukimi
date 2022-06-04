@@ -13,6 +13,7 @@ export class FlashcardsServiceService {
   private url: string;
   constructor(private http: HttpClient) {
     this.url = 'https://rocky-waters-38120.herokuapp.com/api/';
+    //this.url = 'http://localhost/tfm/public/api/'
   }
 
   getFlashcards(user_id: string): Observable<FlashcardDTO[]> {
@@ -29,11 +30,10 @@ export class FlashcardsServiceService {
     return this.http.get<FlashcardDTO>(this.url+'flashcard/' + id);
   }
 
-
   createFlashcard(flashcard: FlashcardDTO): Observable<FlashcardDTO[]> {
     return this.http.post<FlashcardDTO[]>(this.url + 'create', flashcard);
   }
-
+  //es srs
   spacedRepetition(flashcard: FlashcardDTO): Observable<any> {
     return this.http.put<any>(this.url + 'srs', flashcard);
   }

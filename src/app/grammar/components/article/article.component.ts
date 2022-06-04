@@ -17,7 +17,10 @@ export class ArticleComponent implements OnInit {
   showOthers: boolean;
   category: boolean;
   sidebar: boolean;
-  article: ArticleDTO
+  loading: boolean;
+  article: ArticleDTO;
+  currentArticle: string;
+  error: boolean;
   constructor(private grammarService: GrammarService) {
     this.showNames = false;
     this.showAdjectives = false;
@@ -26,13 +29,23 @@ export class ArticleComponent implements OnInit {
     this.showOthers = false;
     this.category = false;
     this.sidebar = false;
+    this.loading=false;
+    this.error = false;
+    this.currentArticle = '';
     this.article = new ArticleDTO('', '');
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.grammarService.getArticle('Introducción').subscribe(
       (response) => {
+        this.loading = false;
         this.article = response;
+      },
+      (error) =>{
+        this.error = true;
+        this.loading = false;
+        this.currentArticle = 'Introducción';
       }
     )
   }
@@ -67,14 +80,36 @@ export class ArticleComponent implements OnInit {
     this.sidebar= false;
   }
 
-  changeArticle(e: Event){
-    this.grammarService.getArticle(((e.target as HTMLElement).textContent) as string).subscribe(
+  tryAgain(){
+    this.error= false;
+    this.loading = true;
+    this.grammarService.getArticle(this.currentArticle).subscribe(
       (response) => {
+        this.loading = false;
         this.article = response;
         this.sidebar =false;
       },
       (error) =>{
-        console.log(error);
+        this.loading = false;
+        this.error = true;
+      }
+    )
+  }
+
+  changeArticle(e: Event){
+    this.article = new ArticleDTO('', '');
+    this.loading = true;
+    this.error = false;
+    this.grammarService.getArticle(((e.target as HTMLElement).textContent) as string).subscribe(
+      (response) => {
+        this.loading = false;
+        this.article = response;
+        this.sidebar =false;
+      },
+      (error) =>{
+        this.error = true;
+        this.loading = false;
+        this.currentArticle = (e.target as HTMLElement).textContent as string;
       }
     )
   }

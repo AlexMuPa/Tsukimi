@@ -7,7 +7,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { KanaModule } from './kana/kana.module';
 import { UserModule } from './users/user.module';
@@ -16,6 +16,8 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
 import { FlashcardsModule } from './flashcards/flashcards.module';
 import { GrammarModule } from './grammar/grammar.module';
 import { NgxFitTextModule } from '@pikselin/ngx-fittext';
+import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { NgxFitTextModule } from '@pikselin/ngx-fittext';
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
     multi: true
-  }],
+  },
+  {provide : LocationStrategy , useClass: HashLocationStrategy}
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { from } from 'rxjs';
 import { SharingService } from 'src/app/services/sharing.service';
 import { FlashcardDTO } from '../../models/flashcard.dto';
 import { FlashcardsServiceService } from '../../services/flashcards-service.service';
@@ -18,6 +19,7 @@ export class FlashcardFormComponent implements OnInit {
   flashcardForm: FormGroup;
   isValidForm: boolean | null;
   fliping: boolean | null;
+  errorMessage: boolean | null;
   @Input() edit:any = '';
 
   constructor(
@@ -28,6 +30,7 @@ export class FlashcardFormComponent implements OnInit {
     this.flashcard = new FlashcardDTO('', '');
     this.isValidForm = null;
     this.fliping = null;
+    this.errorMessage = null;
     this.front = new FormControl(this.flashcard.front, [
       Validators.required,
       Validators.maxLength(5000)
@@ -58,8 +61,6 @@ export class FlashcardFormComponent implements OnInit {
   }
 
   createFlashcard(): void{
-    console.log('entra en create');
-
     if (this.flashcardForm.invalid || this.fliping) {
       this.isValidForm = false;
       this.fliping = null;
@@ -68,7 +69,7 @@ export class FlashcardFormComponent implements OnInit {
 
     this.flashcard.front = this.flashcardForm.value.front;
     this.flashcard.back = this.flashcardForm.value.back;
-    console.log(this.flashcard);
+
     if(this.edit) {
       this.flashcard.id = this.edit;
       this.flashcardService.updateFlashcard(this.flashcard).subscribe(
@@ -76,7 +77,10 @@ export class FlashcardFormComponent implements OnInit {
           console.log(response);
           this.sharingService.setModal({isActive: false});
         },
-        error => console.log(error.error.message)
+        error => {
+          console.log(error.error.message);
+          this.errorMessage = true;
+        }
       )}
     else {
       this.flashcard.nextReview = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -89,7 +93,10 @@ export class FlashcardFormComponent implements OnInit {
         console.log(response);
         this.sharingService.setModal({isActive: false});
       },
-      error => console.log(error.error.message)
+      error => {
+        console.log(error.error.message);
+        this.errorMessage = true;
+      }
     )
   }
   }
@@ -104,4 +111,9 @@ export class FlashcardFormComponent implements OnInit {
     this.front.setValue(this.back.value);
     this.back.setValue(frontPart);
   }
+
+  tryAgain(){
+    this.errorMessage = null;
+  }
+
 }

@@ -13,12 +13,17 @@ import { Label } from 'ng2-charts';
 })
 export class FlashcardsHomeComponent implements OnInit {
 
-  reviews: number | null;
+  reviews: string | null;
   form: boolean | null;
   total: number | null;
+  loading: boolean;
+  error: boolean;
+  errorReviews: boolean;
+  errorFlashcards: boolean;
+  showChart: boolean;
 
   lineChartData: ChartDataSets[] = [];
-  lineChartLabel: Label[] = [];
+  lineChartLabel: string[] = ['%', 'Fecha'];
   lineChartOptions: (ChartOptions & { annotation?: any }) = {
     responsive: true,
   };
@@ -50,6 +55,11 @@ export class FlashcardsHomeComponent implements OnInit {
     ) {
     this.reviews = null;
     this.total = null;
+    this.loading = false;
+    this.error = false;
+    this.errorReviews = false;
+    this.errorFlashcards= false;
+    this.showChart = false;
     this.sharingService.getModal().subscribe((modal)=>{
       this.form = modal.isActive;
      this.getFlashcards();
@@ -65,32 +75,53 @@ export class FlashcardsHomeComponent implements OnInit {
   }
 
   getFlashcards(){
-    this.flashcardService.getFlashcards(sessionStorage.getItem('userId') as string).subscribe((response)=>{
-      if(response.length ==0) this.reviews = 0;
+    this.flashcardService.getFlashcards(sessionStorage.getItem('userId') as string).subscribe(
+      (response)=>{
+      if(response.length ==0) this.reviews = '0';
       else {
-        this.reviews = response.length;
+        this.reviews = response.length.toString();
       }
-    })
+      },
+      () => {
+        this.reviews = 'Error al conectar';
+        this.errorReviews = true;
+      })
   }
 
   getAllFlashcards(){
-    this.flashcardService.getAllFlashcards(sessionStorage.getItem('userId') as string).subscribe((response)=>{
+    this.flashcardService.getAllFlashcards(sessionStorage.getItem('userId') as string).subscribe(
+      (response)=>{
       if(response.length ==0) this.total = 0;
       else {
         this.total = response.length;
       }
+    },
+    () => {
+      this.errorFlashcards = true;
     })
   }
 
   getData(){
-    this.flashcardService.getData(sessionStorage.getItem('userId') as string).subscribe((response)=>{
+    this.loading = true;
+    this.error = false;
+    this.flashcardService.getData(sessionStorage.getItem('userId') as string).subscribe(
+      (response)=>{
       console.log(response);
-      this.lineChartData = [
-        {data: response.map(item => (item.correct/(item.correct+item.incorrect))), label: 'Respuestas correctas'},
-        {data: response.map(item => (item.incorrect/(item.correct+item.incorrect))), label: 'Respuestas incorrectas'}
-      ];
-      this.lineChartLabel = response.map( item => item.days);
-    })
+      if(response.length >0) {
+        this.lineChartData = [
+          {data: response.map(item => (item.correct/(item.correct+item.incorrect)*100)), label: 'Respuestas correctas en %'},
+          {data: response.map(item => (item.incorrect/(item.correct+item.incorrect)*100)), label: 'Respuestas incorrectas en %'}
+        ];
+        this.lineChartLabel = response.map( item => item.days);
+        this.showChart = true;
+      }
+      this.loading = false;
+    },
+    () =>{
+      this.error = true;
+      this.loading = false;
+    }
+    )
   }
 
 

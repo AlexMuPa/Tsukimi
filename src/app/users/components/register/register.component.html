@@ -16,7 +16,7 @@
       <div>
         <label for="userName">Nombre de usuario: </label>
         <div class="mt-1">
-          <input type="text" [formControl]="userName"
+          <input type="text" id="userName" [formControl]="userName"
           class="border rounded w-full focus:outline-none focus:border-2" >
         </div>
         <div
@@ -32,7 +32,7 @@
       <div>
         <label for="email">Email: </label>
         <div class="mt-1">
-          <input type="email" [formControl]="email"
+          <input type="email" id="email" [formControl]="email"
           class="border rounded w-full focus:outline-none focus:border-2">
         </div>
         <div
@@ -47,7 +47,7 @@
       <div>
         <label for="password">Contraseña: </label>
         <div class="mt-1">
-          <input type="password" [formControl]="password"
+          <input type="password" id="password"[formControl]="password"
           class="border rounded w-full focus:outline-none focus:border-2">
         </div>
         <div
@@ -64,7 +64,7 @@
       <div>
         <label for="confirmPassword">Repetir contraseña: </label>
         <div class="mt-1">
-          <input type="password" [formControl]="confirmPassword"
+          <input type="password" id="confirmPassword" [formControl]="confirmPassword"
           class="border rounded w-full focus:outline-none focus:border-2">
         </div>
         <div
@@ -79,7 +79,7 @@
       </div>
       <div class="text-center">
         <button type="submit"
-        class="py-2 mx-auto px-5 text-red-2 font-bold rounded-lg bg-black border border-black hover:bg-black-2 hover:text-white ">
+        class="py-2 mx-auto px-5 text-orange font-bold rounded-lg bg-black border border-black hover:bg-black-2 hover:text-white ">
           Registrarse
         </button>
       </div>
