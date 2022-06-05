@@ -17,6 +17,8 @@ import { FlashcardsModule } from './flashcards/flashcards.module';
 import { GrammarModule } from './grammar/grammar.module';
 import { NgxFitTextModule } from '@pikselin/ngx-fittext';
 import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -34,15 +36,20 @@ import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
     UserModule,
     FlashcardsModule,
     GrammarModule,
-    NgxFitTextModule
+    NgxFitTextModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [SharingService,
   {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
     multi: true
-  },
-  {provide : LocationStrategy , useClass: HashLocationStrategy}
+  }
 ],
   bootstrap: [AppComponent]
 })

@@ -48,11 +48,9 @@ export class FlashcardFormComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log(this.edit)
     if(this.edit){
       this.flashcardService.getFlashcard(this.edit).subscribe(
         (response) => {
-          console.log(response);
           this.front.setValue(response.front);
           this.back.setValue(response.back);
         }
@@ -74,11 +72,9 @@ export class FlashcardFormComponent implements OnInit {
       this.flashcard.id = this.edit;
       this.flashcardService.updateFlashcard(this.flashcard).subscribe(
         response => {
-          console.log(response);
           this.sharingService.setModal({isActive: false});
         },
         error => {
-          console.log(error.error.message);
           this.errorMessage = true;
         }
       )}
@@ -90,11 +86,9 @@ export class FlashcardFormComponent implements OnInit {
       this.flashcard.answer = 'error';
       this.flashcardService.createFlashcard(this.flashcard).subscribe(
       response => {
-        console.log(response);
         this.sharingService.setModal({isActive: false});
       },
       error => {
-        console.log(error.error.message);
         this.errorMessage = true;
       }
     )

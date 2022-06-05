@@ -12,14 +12,7 @@ const routes: Routes = [
       {path: '', component: FlashcardsHomeComponent, canActivate: [PermissionsGuard]},
       {path: 'review', component: FlashcardsReviewComponent, canActivate: [PermissionsGuard]}
     ]
-  }/*
-  {
-    path:'',
-    children: [
-      {path: 'review', component: FlashcardsReviewComponent, canActivate: [PermissionsGuard]}
-    ]
   }
-  */
 ]
 
 

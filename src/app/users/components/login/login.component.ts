@@ -50,6 +50,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if(sessionStorage.getItem('userId')) this.router.navigateByUrl('');
+    this.sharingService.setMenu({bars: false, user:false});
   }
 
   login(){
@@ -64,7 +66,6 @@ export class LoginComponent implements OnInit {
         this.loginUser.id = response.id;
         sessionStorage.setItem('access_token', (this.loginUser.access_token as string));
         sessionStorage.setItem('userId', (this.loginUser.id as string));
-        console.log(response)
         this.errorMessage = "Inicio de sesión correcto";
         from(this.error(true, 4000)).subscribe(
           ()=>{
@@ -77,7 +78,6 @@ export class LoginComponent implements OnInit {
         )
       },
       error => {
-        console.log(error);
         if(error.error.message.includes('details')) this.errorMessage = 'Error en el email o contraseña';
         else this.errorMessage = 'Se ha producido un error en el servidor';
         from(this.error(false, 4000)).subscribe(

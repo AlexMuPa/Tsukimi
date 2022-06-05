@@ -7,10 +7,16 @@ export interface Loged {
 export interface Modal {
   isActive: boolean
 }
+
+export interface Menu {
+  bars: boolean;
+  user: boolean;
+}
 @Injectable()
 export class SharingService {
   private Loged: BehaviorSubject<Loged> = new BehaviorSubject<Loged>({isLoged: false});
   private modal: BehaviorSubject<Modal> = new BehaviorSubject<Modal>({isActive: false});
+  private menu: BehaviorSubject<Menu> = new BehaviorSubject<Menu>({bars: false, user: false});
 
   getLoged(){
     return this.Loged.asObservable();
@@ -25,8 +31,15 @@ export class SharingService {
   }
 
   setModal(modal: Modal){
-    console.log(modal);
     this.modal.next(modal);
+  }
+
+  getMenu(){
+    return this.menu.asObservable();
+  }
+
+  setMenu(menu: Menu){
+    this.menu.next(menu);
   }
 
 }

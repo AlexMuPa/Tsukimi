@@ -20,6 +20,12 @@ export class HeaderComponent implements OnInit {
     this.sharingService.getLoged().subscribe(
       loged => this.login = loged.isLoged
     );
+    this.sharingService.getMenu().subscribe(
+      menu => {
+        this.bars = menu.bars;
+        this.user = menu.user
+      }
+    )
     if(sessionStorage.getItem('access_token')) this.login= true;
     else this.login=false;
   }
@@ -28,18 +34,16 @@ export class HeaderComponent implements OnInit {
   }
 
   changeBars() {
-    if(this.bars) this.bars =false;
+    if(this.bars) this.sharingService.setMenu({bars: false, user:false});
     else {
-      this.bars= true;
-      this.user = false;
+      this.sharingService.setMenu({bars: true, user:false});
     }
   }
 
   changeUser() {
-    if(this.user) this.user =false;
+    if(this.user) this.sharingService.setMenu({bars: false, user:false});
     else {
-      this.user= true;
-      this.bars = false;
+      this.sharingService.setMenu({bars: false, user:true});
     }
   }
 
@@ -47,7 +51,6 @@ export class HeaderComponent implements OnInit {
     sessionStorage.removeItem('access_token');
     sessionStorage.removeItem('userId');
     this.login=false;
-    //this.sharingService.setLoged({isLoged: false});
     this.router.navigateByUrl('');
   }
 

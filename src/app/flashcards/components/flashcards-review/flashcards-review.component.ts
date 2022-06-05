@@ -29,6 +29,7 @@ export class FlashcardsReviewComponent implements OnInit{
   form: boolean;
   edit: string;
   firstReview: boolean;
+  errorElements: string[];
   chart: ChartDTO;
   @ViewChild("dynamicFitText") private dynamicFitText!: FitTextComponent;
 
@@ -39,6 +40,7 @@ export class FlashcardsReviewComponent implements OnInit{
     ) {
     this.wrongAnswer = null;
     this.firstReview = true;
+    this.errorElements = [];
     this.correctAnswer = null;
     this.answered = false;
     this.errorMessage = false;
@@ -61,7 +63,6 @@ export class FlashcardsReviewComponent implements OnInit{
         });
       }
     })
-    //this.loadFlashcards();
    }
 
   ngOnInit(): void {
@@ -72,7 +73,6 @@ export class FlashcardsReviewComponent implements OnInit{
   getChart(){
     this.flashcardService.getData(sessionStorage.getItem('userId') as string).subscribe((response)=>{
       if(new Date(response[response.length-1].days.replace(/:| /g,"-")).getTime() === new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate() )).getTime()) {
-        console.log(response[response.length-1]);
         this.firstReview = false;
         this.chart = response[response.length-1];
       }
@@ -82,8 +82,9 @@ export class FlashcardsReviewComponent implements OnInit{
   loadFlashcards(){
     this.flashcardService.getFlashcards(sessionStorage.getItem('userId') as string).subscribe(
       flashcards =>{
+        this.currentFlashcard.front ='';
         if(flashcards.length == 0) {
-          this.router.navigateByUrl('');
+          this.router.navigateByUrl('/tarjetas');
         }
         else{
           this.flashcardList = flashcards
@@ -97,7 +98,6 @@ export class FlashcardsReviewComponent implements OnInit{
   }
 
   onEnter(e: Event): void {
-    console.log(this.currentFlashcard);
     this.answered = true;
     if((e.target as HTMLInputElement).value == this.currentFlashcard.back){
       this.correctAnswer = true;
@@ -111,21 +111,19 @@ export class FlashcardsReviewComponent implements OnInit{
   }
 
   answer(outcome: string): void{
-    console.log(outcome);
     switch(outcome){
       case "error":
         this.currentFlashcard.answer= 'error';
         this.flashcardService.spacedRepetition(this.currentFlashcard).subscribe(
         (response)=> {
-          console.log(response);
           this.currentFlashcard.front = '';
           this.loading = true;
           this.loadFlashcards();
-          this.updateChart();
+          this.updateChart('error');
+          this.errorElements.push(this.currentFlashcard.front);
         },
         (error) => {
           this.currentFlashcard.front = '';
-          console.log(error);
           this.errorMessage = true;
         }
         );
@@ -133,13 +131,12 @@ export class FlashcardsReviewComponent implements OnInit{
       case "difficult":
         this.numberOfSuccess++;
         this.currentFlashcard.answer= 'difficult';
-        console.log(this.currentFlashcard.consecutiveSucc);
         this.flashcardService.spacedRepetition(this.currentFlashcard).subscribe((response)=>{
-          console.log(response);
           this.currentFlashcard.front = '';
           this.loading = true;
           this.loadFlashcards();
-          this.updateChart();
+          if(this.errorElements.filter(el => el === this.currentFlashcard.front).length == 0) this.updateChart('correct');
+          else this.errorElements = this.errorElements.filter(el => el !== this.currentFlashcard.front);
         },
         () => {
           this.currentFlashcard.front = '';
@@ -151,11 +148,11 @@ export class FlashcardsReviewComponent implements OnInit{
         this.numberOfSuccess++;
         this.currentFlashcard.answer= 'easy';
         this.flashcardService.spacedRepetition(this.currentFlashcard).subscribe((response)=>{
-          console.log(response);
           this.currentFlashcard.front = '';
           this.loading = true;
           this.loadFlashcards();
-          this.updateChart();
+          if(this.errorElements.filter(el => el === this.currentFlashcard.front).length == 0) this.updateChart('correct');
+          else this.errorElements = this.errorElements.filter(el => el !== this.currentFlashcard.front);
         },
         () => {
           this.currentFlashcard.front = '';
@@ -171,7 +168,6 @@ export class FlashcardsReviewComponent implements OnInit{
   }
 
   flashcardForm(){
-    console.log(this.currentFlashcard);
     this.sharingService.setModal({isActive: true})
     this.edit = this.currentFlashcard.id;
   }
@@ -181,7 +177,6 @@ export class FlashcardsReviewComponent implements OnInit{
       '¿Estás seguro que deseas eliminar la tarjeta?'
     )){
       this.flashcardService.deleteFlashcard(this.currentFlashcard.id).subscribe((response)=>{
-        console.log(response)
         this.loadFlashcards();
       })
     }
@@ -189,9 +184,10 @@ export class FlashcardsReviewComponent implements OnInit{
     this.wrongAnswer =null;
     this.correctAnswer = null;
   }
-  updateChart(){
+  updateChart(answer: string){
     if(this.firstReview){
-      this.chart.correct = 1;
+      if(answer ==="correct") this.chart.correct = 1;
+      else this.chart.incorrect = 1;
       this.chart.days = new Date(Date.UTC(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate() )).toISOString().split('T')[0];
       this.chart.userId = sessionStorage.getItem('userId') as string;
       this.flashcardService.createChart(this.chart).subscribe(
@@ -199,10 +195,9 @@ export class FlashcardsReviewComponent implements OnInit{
       );
     }
     else {
-      this.chart.correct++;
-      this.flashcardService.updateChart(this.chart).subscribe(
-        (response) => console.log(response)
-      );
+      if(answer ==="correct") this.chart.correct++;
+      else this.chart.incorrect++;
+      this.flashcardService.updateChart(this.chart).subscribe();
     }
   }
 

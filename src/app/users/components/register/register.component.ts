@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { from } from 'rxjs';
+import { SharingService } from 'src/app/services/sharing.service';
 import { UserDTO } from '../../models/user.dto';
 import { UserService } from '../../services/user.service';
 import { passwordMatching } from '../../validators/match-password';
@@ -32,7 +33,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private sharingService: SharingService
   ) {
     this.registerUser = new UserDTO('', '', '');
 
@@ -66,7 +68,10 @@ export class RegisterComponent implements OnInit {
     }, { validators: passwordMatching() });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if(sessionStorage.getItem('userId')) this.router.navigateByUrl('');
+    this.sharingService.setMenu({bars: false, user:false});
+  }
 
   register(): void {
     if (this.registerForm.invalid) {
@@ -75,7 +80,6 @@ export class RegisterComponent implements OnInit {
     this.registerUser = this.registerForm.value
     this.userService.register(this.registerUser).subscribe(
       response => {
-        console.log(response)
         this.errorMessage = "Registro realizado con éxito";
         from(this.error(true, 3000)).subscribe(
           ()=>{
@@ -87,7 +91,6 @@ export class RegisterComponent implements OnInit {
         )
       },
       error => {
-        console.log(error);
         if(error.error.message.includes('email')) this.errorMessage = 'Ya existe un usuario con ese email';
         else this.errorMessage = 'Ya existe un usuario con ese nombre';
         from(this.error(false, 3000)).subscribe(

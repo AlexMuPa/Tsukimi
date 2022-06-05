@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FlashcardsHomeComponent } from 'src/app/flashcards/components/flashcars/components/flashcards-home/flashcards-home.component';
+import { SharingService } from 'src/app/services/sharing.service';
 import { ArticleDTO } from '../../models/article.dto';
 import { GrammarService } from '../../services/grammar.service';
 
@@ -21,7 +22,7 @@ export class ArticleComponent implements OnInit {
   article: ArticleDTO;
   currentArticle: string;
   error: boolean;
-  constructor(private grammarService: GrammarService) {
+  constructor(private grammarService: GrammarService, private sharingService: SharingService) {
     this.showNames = false;
     this.showAdjectives = false;
     this.showVerbs = false;
@@ -47,7 +48,8 @@ export class ArticleComponent implements OnInit {
         this.loading = false;
         this.currentArticle = 'Introducción';
       }
-    )
+    );
+    this.sharingService.setMenu({bars: false, user:false});
   }
 
   showOptions(e: Event){
@@ -110,6 +112,7 @@ export class ArticleComponent implements OnInit {
         this.error = true;
         this.loading = false;
         this.currentArticle = (e.target as HTMLElement).textContent as string;
+        this.sidebar = false;
       }
     )
   }

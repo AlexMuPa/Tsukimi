@@ -1,7 +1,7 @@
 import { HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { filter, map, tap }  from  'rxjs/operators';
+import { map }  from  'rxjs/operators';
 import { ChartDTO } from '../models/chart.dto';
 import { FlashcardDTO } from '../models/flashcard.dto';
 
@@ -33,7 +33,7 @@ export class FlashcardsServiceService {
   createFlashcard(flashcard: FlashcardDTO): Observable<FlashcardDTO[]> {
     return this.http.post<FlashcardDTO[]>(this.url + 'create', flashcard);
   }
-  //es srs
+
   spacedRepetition(flashcard: FlashcardDTO): Observable<any> {
     return this.http.put<any>(this.url + 'srs', flashcard);
   }

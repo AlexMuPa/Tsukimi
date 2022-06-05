@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
+import { SharingService } from 'src/app/services/sharing.service';
 
 @Component({
   selector: 'app-home',
@@ -8,11 +9,12 @@ import { Meta } from '@angular/platform-browser';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private meta: Meta) {
+  constructor(private meta: Meta, private sharingService: SharingService) {
     this.meta.addTag({ name: 'Tsukimi', content: '¿Qué puedes estudiar en Tsukimi?' });
    }
 
   ngOnInit(): void {
+    this.sharingService.setMenu({bars: false, user:false});
   }
 
 }

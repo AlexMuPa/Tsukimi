@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FlashcardsServiceService } from 'src/app/flashcards/services/flashcards-service.service';
 import { SharingService } from 'src/app/services/sharing.service';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Label } from 'ng2-charts';
 
 
 @Component({
@@ -72,6 +71,7 @@ export class FlashcardsHomeComponent implements OnInit {
     this.getFlashcards();
     this.getAllFlashcards();
     this.getData();
+    this.sharingService.setMenu({bars: false, user:false});
   }
 
   getFlashcards(){
@@ -106,7 +106,6 @@ export class FlashcardsHomeComponent implements OnInit {
     this.error = false;
     this.flashcardService.getData(sessionStorage.getItem('userId') as string).subscribe(
       (response)=>{
-      console.log(response);
       if(response.length >0) {
         this.lineChartData = [
           {data: response.map(item => (item.correct/(item.correct+item.incorrect)*100)), label: 'Respuestas correctas en %'},

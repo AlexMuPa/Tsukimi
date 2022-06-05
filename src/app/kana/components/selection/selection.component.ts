@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { SharingService } from 'src/app/services/sharing.service';
 
 @Component({
   selector: 'app-selection',
   templateUrl: './selection.component.html',
   styleUrls: ['./selection.component.css']
 })
-export class SelectionComponent {
+export class SelectionComponent implements OnInit{
 
   title = 'kana';
 
@@ -34,7 +35,7 @@ export class SelectionComponent {
   romajiConv: any;
 
   end: boolean;
-  constructor() {
+  constructor(private sharingService: SharingService) {
     this.hiraganaSelected = ['']
     this.hiragana();
     this.startQuiz = false;
@@ -46,6 +47,10 @@ export class SelectionComponent {
     this.wrongAnswer =false;
     this.end=false;
     this.error_message = false;
+   }
+
+   ngOnInit(): void {
+    this.sharingService.setMenu({bars: false, user:false});
    }
 
   hiragana(): void{
